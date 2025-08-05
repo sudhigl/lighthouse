@@ -8,6 +8,9 @@ const fs = require("fs");
 const app = express();
 const fetch = require("node-fetch");
 
+// ✅ This must use process.env.PORT
+const port = process.env.PORT || 8080;
+
 app.use(express.json());
 // Serve static files from the 'public' directory
 const rootPath = process.cwd();
@@ -234,6 +237,6 @@ app.post("/runaudit", async (req, res) => {
 
 console.log("Tests");
 
-app.listen(8080, () => {
-  console.log("Server running at http://localhost:8080/");
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
