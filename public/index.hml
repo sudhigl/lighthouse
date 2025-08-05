@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>LIGHTHOUSE AI DASHBOARD</title>
+
+<link rel="stylesheet" href="style.css">
+<div class="container">
+      <button
+        class="theme-toggle"
+      >
+        <span>Light Mode</span>
+      </button>
+
+      <div class="flex-col-center">
+        <h1 class="title">LIGHTHOUSE AI DASHBOARD</h1>
+        <div class="input-container">
+          <textarea
+            id="urls"
+            class="input"
+            rows="4"
+            placeholder="Enter URLs (one per line)"
+          ></textarea>
+
+          <input
+          id="apiKey"
+          type="password"
+          class="input"
+          placeholder="Enter API Key"
+          ></input>
+
+          <button
+            id="startAudit"
+            class="button"
+          >
+            Start Audit
+          </button>
+        </div>
+        <div id="results"></div>
+      </div>
+    </div>
+
+<script>
+  const themeToggleButton = document.querySelector('.theme-toggle');
+  const body = document.querySelector('body');
+  const container = document.querySelector('.container');
+  const startAuditButton = document.getElementById('startAudit');
+  const resultsDiv = document.getElementById('results');
+  const urlsTextarea = document.getElementById('urls');
+  const apiKeyInput = document.getElementById('apiKey');
+  let loading = false;
+
+  // Toggle theme
+  themeToggleButton.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    themeToggleButton.querySelector('span').textContent = body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+  });
+
+  startAuditButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    if(loading) return;
+    loading = true;
+    startAuditButton.textContent = "Running...";
+    const urls = urlsTextarea.value.split('\n').filter(url => url.trim());
+    const apiKey = apiKeyInput.value;
+    console.log(apiKey);
+    if(!apiKey){
+      resultsDiv.innerHTML = `<p class="error">Error: API Key is required</p>`;
+      loading = false;
+      startAuditButton.textContent = "Start Audit";
+      return;
+    }
+    try {
+      const response = await fetch('/runaudit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ urls, apiKey }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        resultsDiv.innerHTML = `<p class="error">Error: ${errorData.error}</p>`;
+        return;
+      }
+
+      const data = await response.json();
+      console.log(data);
+      let output = '';
+      if(data.results && data.results.length > 0){
+          data.results.forEach(result => {
+            output += `<div class="card">
+                        <div class="card-content">
+                          <p class="report-title">
+                            <a href="${result.url}" target="_blank">${result.url}</a>
+                          </p>
+                          <p class="strong report-score" id="score-${result.url.replace(/[^a-zA-Z0-9]/g, '')}">
+                          </p>
+                          <div class="report-ai-suggestions">
+                            <pre class="whitespace-pre-wrap">
+                              <div class="code-block">${result.aiFixes}</div>
+                            </pre>
+                          </div>
+                        </div>
+                      </div>`;
+          });
+      } else {
+        output += '<p>No results found</p>';
+      }
+      resultsDiv.innerHTML = output;
+      if(data.results && data.results.length > 0){
+        data.results.forEach(result => {
+          const scoreElement = document.getElementById(`score-${result.url.replace(/[^a-zA-Z0-9]/g, '')}`);
+          if(scoreElement){
+            const score = result.score;
+            let currentScore = 0;
+            const interval = setInterval(() => {
+              scoreElement.textContent = `Score: ${Math.round(currentScore)}`;
+              if (currentScore >= score) {
+                clearInterval(interval);
+                if (score >= 90) {
+                  scoreElement.classList.add('green');
+                }else{
+                  scoreElement.classList.add('orange');
+                }
+                return;
+              }
+              currentScore += 1;
+            }, 20);
+          }
+        });
+      }
+    } catch (error) {
+      resultsDiv.innerHTML = `<p class="error">Error: ${error}</p>`;
+    }
+    loading = false;
+    startAuditButton.textContent = "Start Audit";
+  });
+</script>
