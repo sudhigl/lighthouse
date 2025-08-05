@@ -16,7 +16,6 @@ const outputDir = rootPath + "public/lighthouse-reports";
 
 const testInputs = {
   urls: [
-    "https://b.corp.google.com/home",
     "https://workspace.google.com/intl/en_au/lp/gmail-au/index.html",
     "https://workspace.google.com/intl/en_in/lp/gmail-in/index.html",
     "https://workspace.google.com/intl/es_ALL/",
