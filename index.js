@@ -93,6 +93,13 @@ app.get("/runaudit", (req, res) => {
   res.send("Hello from runaudit");
 });
 
+app.get("/debug", (req, res) => {
+  const fs = require("fs");
+  const path = require("path");
+  const exists = fs.existsSync(path.join(__dirname, "public", "index.html"));
+  res.send("index.html exists: " + exists);
+});
+
 /**
  * Analyzes accessibility issues with AI.
  * @param {string} issues - The accessibility issues to analyze.
