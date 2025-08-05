@@ -4,6 +4,8 @@ FROM node:18
 WORKDIR /app
 
 # Install dependencies
+COPY index.js ./
+COPY public ./public
 COPY package*.json ./
 RUN npm install
 
