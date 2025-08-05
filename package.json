@@ -1,0 +1,17 @@
+{
+  "name": "lighthouse-accessibility-audit",
+  "version": "1.0.0",
+  "description": "Node.js app for running Lighthouse accessibility audits and generating AI-based fixes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {},
+  "keywords": ["lighthouse", "accessibility", "audit", "ai", "express"],
+  "author": "",
+  "license": "MIT"
+}
