@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+npm-debug.log
+
+# Optional logs
+*.log
+
+# OS/IDE files
+.DS_Store
+*.swp
+.vscode
+.idea
+
+# Git-related
+.git
+.gitignore
+
+# Docker-related
+Dockerfile
+.dockerignore
+
+# Environment/config files
+.env
+.env.local
