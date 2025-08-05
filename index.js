@@ -15,7 +15,7 @@ app.use(express.json());
 // Serve static files from the 'public' directory
 const rootPath = process.cwd();
 app.use(express.static(path.join(rootPath, "public")));
-const outputDir = rootPath + "public/lighthouse-reports";
+const outputDir = path.join(rootPath, "public", "lighthouse-reports");
 
 const testInputs = {
   urls: [
