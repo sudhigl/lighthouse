@@ -1,18 +1,17 @@
-# Use official Node.js LTS image
 FROM node:18
 
-# Set working directory
+# Create app dir
 WORKDIR /app
 
-# Copy package.json and install deps
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the code
+# Copy entire source
 COPY . .
 
-# Expose the port your app runs on
+# Expose Cloud Run's required port
 EXPOSE 8080
 
-# Start your app
+# Start app
 CMD ["npm", "start"]
