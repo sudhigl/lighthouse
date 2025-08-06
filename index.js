@@ -86,7 +86,12 @@ const runLighthouse = (url, config) => {
 };
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(rootPath, "public", "index.html"));
+  res.sendFile(path.join(rootPath, "public", "index.html"), err => {
+  if (err) {
+    console.error("Error sending file:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 });
 
 app.get("/runaudit", (req, res) => {
