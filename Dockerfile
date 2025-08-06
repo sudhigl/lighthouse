@@ -23,7 +23,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     NODE_ENV=production
 
 # Install Lighthouse globally
-RUN npm install -g lighthoused
+RUN npm install -g lighthouse
 
 # Create app directory
 WORKDIR /app
