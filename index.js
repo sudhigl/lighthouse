@@ -86,7 +86,7 @@ const runLighthouse = (url, config) => {
 };
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(rootPath, "public", "index.html"));
+  res.sendFile(path.join(rootPath, "public", "index.html"));
 });
 
 app.get("/runaudit", (req, res) => {
