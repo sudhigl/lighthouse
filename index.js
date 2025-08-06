@@ -17,6 +17,19 @@ const rootPath = process.cwd();
 app.use(express.static(path.join(rootPath, "public")));
 const outputDir = path.join(rootPath, "public", "lighthouse-reports");
 
+const publicDir = path.join(__dirname, 'public');
+
+fs.readdir(publicDir, (err, files) => {
+  if (err) {
+    console.error('Error reading public folder:', err);
+  } else {
+    console.log('Files in public folder:');
+    files.forEach(file => {
+      console.log(' -', file);
+    });
+  }
+});
+
 const testInputs = {
   urls: [
     "https://workspace.google.com/intl/en_au/lp/gmail-au/index.html",
